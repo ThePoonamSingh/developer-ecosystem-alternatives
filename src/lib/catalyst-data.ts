@@ -35,13 +35,44 @@ export const CATEGORIES = [
 ];
 
 export const SWITCH_REASONS = [
-  { stat: "−63%", label: "Stack complexity", desc: "Replace 4–6 vendors with a single platform." },
-  { stat: "10×", label: "Faster deployment", desc: "From commit to production in seconds, not hours." },
-  { stat: "AI-native", label: "By default", desc: "Agents, embeddings and RAG as first-class primitives." },
-  { stat: "−48%", label: "Infra overhead", desc: "No clusters, no IAM mazes, no on-call rotation." },
-  { stat: "1 SDK", label: "Full-stack DX", desc: "Database, auth, storage, functions, AI — one API." },
-  { stat: "0→1", label: "In a weekend", desc: "Ship a production app before the kickoff meeting." },
+  {
+    stat: "30+",
+    label: "Services in one platform",
+    desc: "Replace 4–6 vendors with a single PaaS.",
+    proof: "Catalyst ships 30+ cloud services — AppSail, Functions, Data Store, Stratus, Circuits and more — under one console.",
+  },
+  {
+    stat: "Minutes",
+    label: "Local to live",
+    desc: "From commit to production without a release engineer.",
+    proof: "Slate, Catalyst's frontend service, goes 'from local to live in minutes, all from one simple workflow.'",
+  },
+  {
+    stat: "AI-native",
+    label: "By default",
+    desc: "Agents, ML and conversational AI as first-class services.",
+    proof: "ZiaServices, ConvoKraft (NLP chatbots) and QuickML (no-code ML) are built-in Catalyst components.",
+  },
+  {
+    stat: "Fully-managed",
+    label: "Zero infra ops",
+    desc: "No clusters, no IAM mazes, no on-call rotation.",
+    proof: "AppSail and CloudScale fully manage infrastructure, storage, security and hosting for you.",
+  },
+  {
+    stat: "5 SDKs",
+    label: "Full-stack DX",
+    desc: "Auth, data, AI and files — one consistent API surface.",
+    proof: "Java, Python, Node, Flutter and Web SDKs cover Auth, Data Store, AI and File Store.",
+  },
+  {
+    stat: "$250",
+    label: "Free credits to start",
+    desc: "Ship a production app before the kickoff meeting.",
+    proof: "Catalyst's homepage offer: free trial + $250 in credits, valid for 6 months.",
+  },
 ];
+
 
 export const USE_CASES = [
   { id: "portal", title: "Customer Portal", icon: "Users", comparisons: ["supabase", "firebase", "aws"] },
