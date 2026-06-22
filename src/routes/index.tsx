@@ -277,7 +277,7 @@ function WhySwitch() {
                 {r.stat}
               </div>
               <div className="relative mt-3 text-sm font-semibold text-foreground">{r.label}</div>
-              <div className="relative mt-1 text-sm text-muted-foreground">{r.desc}</div>
+              
               <div className="relative mt-4 border-t border-hairline pt-3 text-xs leading-relaxed text-muted-foreground/80">
                 {r.proof}
               </div>
