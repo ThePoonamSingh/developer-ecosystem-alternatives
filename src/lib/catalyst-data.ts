@@ -62,6 +62,193 @@ export const FEATURED_COMPARISONS = [
   { vs: "retool", verdict: "Real apps, real code", use: "From admin to product" },
 ];
 
+export type ComparisonDetail = {
+  summary: string;
+  catalystPros: string[];
+  catalystCons: string[];
+  idealUseCases: string[];
+  pricingNotes: { catalyst: string; competitor: string };
+  migrationSteps: string[];
+};
+
+export const COMPARISON_DETAILS: Record<string, ComparisonDetail> = {
+  supabase: {
+    summary:
+      "Supabase nailed open-source Postgres-as-a-service. Catalyst keeps that Postgres-first DNA and folds in AI primitives, edge hosting, and a single SDK — so you stop gluing together five dashboards.",
+    catalystPros: [
+      "Postgres + auth + storage + AI behind one SDK, no project juggling",
+      "Edge hosting and background workers ship in-platform",
+      "First-class agents, embeddings, vector search and RAG",
+      "Type-safe end-to-end: schema → server functions → client",
+    ],
+    catalystCons: [
+      "Younger ecosystem of community extensions and third-party tooling",
+      "Self-hosting requires Catalyst Enterprise (Supabase OSS is free to host)",
+    ],
+    idealUseCases: [
+      "AI-native SaaS with agents and retrieval baked in",
+      "Teams tired of stitching Supabase + Vercel + a vector DB + a queue",
+      "Internal products that need RLS-style auth without the DIY",
+    ],
+    pricingNotes: {
+      catalyst: "Free tier with prod Postgres, AI credits, and edge hosting. Pro $25/mo, usage-based after.",
+      competitor: "Free tier with 500MB DB, paused after a week. Pro $25/mo per project — AI, hosting, queues priced separately elsewhere.",
+    },
+    migrationSteps: [
+      "pg_dump --schema-only and replay into Catalyst Postgres",
+      "Stream data with pg_dump --data-only or logical replication",
+      "Swap supabase-js for @catalyst/sdk (1:1 auth, db, storage)",
+      "Re-point auth callbacks and storage signed-URL origins",
+    ],
+  },
+  firebase: {
+    summary:
+      "Firebase is unbeatable for quick mobile prototypes — until you outgrow document data, custom queries, or Google's billing surprises. Catalyst gives you SQL, open standards, and predictable pricing without giving up real-time.",
+    catalystPros: [
+      "Relational Postgres with proper joins, transactions, and migrations",
+      "No vendor lock-in: standard SQL, S3-compatible storage, open auth",
+      "Realtime subscriptions over Postgres CDC, not a proprietary stream",
+      "AI agents and RAG without bolting on Vertex AI separately",
+    ],
+    catalystCons: [
+      "No native mobile SDK parity yet for iOS/Android (REST + JS today)",
+      "Firestore's offline-first sync model still wins for spotty mobile networks",
+    ],
+    idealUseCases: [
+      "Apps outgrowing Firestore's query and indexing limits",
+      "Teams that need SQL analytics on operational data",
+      "Products that want EU data residency without the GCP maze",
+    ],
+    pricingNotes: {
+      catalyst: "Flat Pro tier with included reads/writes/AI. Predictable per-GB egress.",
+      competitor: "Pay-per-read pricing that surprises at scale; storage egress charged through GCP.",
+    },
+    migrationSteps: [
+      "Export Firestore collections to JSON via Firebase Admin SDK",
+      "Map documents → Postgres tables with a one-time ETL script",
+      "Migrate auth users (with password hashes) via Catalyst Admin API",
+      "Replace Cloud Functions with Catalyst server functions",
+    ],
+  },
+  vercel: {
+    summary:
+      "Vercel is the gold standard for frontend hosting. Catalyst matches the deploy experience and adds the backend layer — database, auth, storage, AI — so you don't need a second platform for anything dynamic.",
+    catalystPros: [
+      "Same git-push DX, but with database, auth, and storage attached",
+      "Server functions run on the edge with direct DB access — no extra hop",
+      "Built-in cron, queues, and background jobs (no Inngest needed)",
+      "Per-branch preview environments include preview databases",
+    ],
+    catalystCons: [
+      "Vercel's Next.js integration is still the deepest in the industry",
+      "Smaller global POP footprint than Vercel's network today",
+    ],
+    idealUseCases: [
+      "Full-stack apps where the backend matters as much as the frontend",
+      "Teams paying separately for Vercel + Supabase + Upstash + Inngest",
+      "AI products that need DB, vectors, and inference on the same edge",
+    ],
+    pricingNotes: {
+      catalyst: "Hosting, DB, storage, AI in one bill. Pro $25/mo includes the full stack.",
+      competitor: "$20/seat for Pro + Postgres, KV, Blob, AI, queues each metered separately — bills compound quickly.",
+    },
+    migrationSteps: [
+      "Import the git repo — framework auto-detected (Next, Remix, Astro, Vite)",
+      "Mirror env vars and secrets through the Catalyst CLI",
+      "Move serverless/edge functions to Catalyst server functions (near 1:1 API)",
+      "Promote a preview deploy to production, swap DNS",
+    ],
+  },
+  render: {
+    summary:
+      "Render is a great escape from Heroku-tax pricing for long-running services. Catalyst gives you the same zero-config services plus a real data layer and AI, instead of just compute.",
+    catalystPros: [
+      "Services, cron, workers, and a managed Postgres in one project",
+      "Auth, storage, and AI included — no shopping for add-ons",
+      "Faster cold starts on edge functions vs Render's container model",
+      "Preview environments include data, not just compute",
+    ],
+    catalystCons: [
+      "Render's Docker-anywhere model is more flexible for arbitrary runtimes",
+      "Long-running stateful services should stay on Render's container tier",
+    ],
+    idealUseCases: [
+      "API + worker apps that want a real database and auth alongside",
+      "Teams that want preview environments with seeded data",
+      "Migrating off Heroku and wanting more than just compute",
+    ],
+    pricingNotes: {
+      catalyst: "Compute, DB, storage, AI on a single usage meter.",
+      competitor: "Per-service pricing — DB, Redis, workers each have their own line item.",
+    },
+    migrationSteps: [
+      "Detect runtime and build commands from existing render.yaml",
+      "Import env vars and connection strings via Catalyst CLI",
+      "Connect the repo — services and cron jobs map 1:1",
+      "Cutover DNS once the preview is green",
+    ],
+  },
+  aws: {
+    summary:
+      "AWS will do anything. That's also the problem. Catalyst gives you the 80% of AWS that 95% of products actually need — without the IAM diagrams, CloudFormation, or on-call rotation.",
+    catalystPros: [
+      "Ship in a weekend what takes a platform team a quarter on AWS",
+      "No IAM, no VPCs, no NAT gateways — secure defaults out of the box",
+      "Pricing you can predict before the invoice arrives",
+      "Postgres, S3-compatible storage, queues, AI — all wired together",
+    ],
+    catalystCons: [
+      "AWS still wins for arbitrary compute shapes (GPUs, FPGAs, bare metal)",
+      "Heavily-regulated workloads may need specific AWS compliance regions",
+      "Multi-region active-active is roadmap on Catalyst, available on AWS today",
+    ],
+    idealUseCases: [
+      "Startups burning runway on a platform team they shouldn't need",
+      "Teams running RDS + Lambda + S3 + Cognito and wanting one bill",
+      "Internal tools and SaaS that don't need hyperscale knobs",
+    ],
+    pricingNotes: {
+      catalyst: "Flat platform fee + transparent usage. No surprise NAT gateway bills.",
+      competitor: "Per-service, per-region, per-egress, per-request — predictable only with a FinOps team.",
+    },
+    migrationSteps: [
+      "Inventory services in use (RDS, Lambda, S3, Cognito, SQS, SES)",
+      "Map IAM roles → Catalyst roles and policies",
+      "Migrate RDS via logical replication with near-zero downtime",
+      "Decommission CloudFormation stacks once traffic is cut over",
+    ],
+  },
+  retool: {
+    summary:
+      "Retool is excellent for ops dashboards your customers will never see. The moment a tool needs to become a real product — branded, multi-tenant, customer-facing — Catalyst is the upgrade path.",
+    catalystPros: [
+      "Real React code, version-controlled, deployable like any product",
+      "Multi-tenant, white-labelable, and embeddable in your own app",
+      "No per-seat pricing — invite your whole company or your customers",
+      "AI agents and workflows are first-class, not a paid add-on",
+    ],
+    catalystCons: [
+      "Drag-and-drop UI builder is by design less prominent than Retool's",
+      "Non-developers can't ship a tool end-to-end without engineering help",
+    ],
+    idealUseCases: [
+      "Internal tools that need to graduate into customer-facing product",
+      "Teams hitting Retool's per-seat pricing ceiling",
+      "Workflows that need custom UX beyond Retool's component library",
+    ],
+    pricingNotes: {
+      catalyst: "Flat platform fee, unlimited builders and end-users.",
+      competitor: "$10–$50 per end-user per month — costs explode past a few hundred users.",
+    },
+    migrationSteps: [
+      "Export Retool queries and resources as a starting schema",
+      "Re-implement screens with the Catalyst component library + AI scaffolding",
+      "Move resource credentials into Catalyst secrets",
+      "Switch SSO and cut Retool seats once parity is reached",
+    ],
+  },
+};
+
 export const MIGRATIONS = [
   { from: "supabase", steps: ["Export schema with pg_dump", "Pipe into Catalyst Postgres", "Swap supabase-js for @catalyst/sdk", "Re-point auth callbacks"] },
   { from: "firebase", steps: ["Export Firestore to JSON", "Map collections to Postgres tables", "Migrate auth users via Admin SDK", "Replace Cloud Functions"] },

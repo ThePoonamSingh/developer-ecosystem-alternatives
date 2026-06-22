@@ -6,9 +6,10 @@ import {
   Users, Layout, Contact, Package, Workflow, Database, Server, Globe, Cpu,
   ChevronRight, Github, Star,
 } from "lucide-react";
-import { PLATFORMS, CATEGORIES, SWITCH_REASONS, USE_CASES, FEATURED_COMPARISONS, MIGRATIONS, APPS, MATRIX } from "@/lib/catalyst-data";
+import { PLATFORMS, CATEGORIES, SWITCH_REASONS, USE_CASES, FEATURED_COMPARISONS, MIGRATIONS, APPS, MATRIX, COMPARISON_DETAILS } from "@/lib/catalyst-data";
 import { DecisionSearch } from "@/components/catalyst/DecisionSearch";
-import { PlatformMark, ComparePreviewCard } from "@/components/catalyst/PlatformMark";
+import { PlatformMark } from "@/components/catalyst/PlatformMark";
+import { Check, Minus, DollarSign, Target, GitBranch } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -90,10 +91,10 @@ function Hero() {
           transition={{ duration: 0.7, delay: 0.05 }}
           className="mt-6 text-center text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl"
         >
-          <span className="text-gradient">Thinking about</span>
+          <span className="text-gradient">Stop guessing which</span>
           <br />
           <span className="relative">
-            switching platforms?
+            platform to build on.
             <span className="absolute -bottom-2 left-1/2 h-[3px] w-24 -translate-x-1/2 bg-catalyst-gradient blur-[1px]" />
           </span>
         </motion.h1>
@@ -358,73 +359,179 @@ function CompareByBuild() {
 }
 
 function FeaturedComparisons() {
-  const [open, setOpen] = useState<string | null>(null);
+  const [active, setActive] = useState<string>(FEATURED_COMPARISONS[0].vs);
+  const current = FEATURED_COMPARISONS.find((c) => c.vs === active)!;
+  const p = PLATFORMS[current.vs];
+  const detail = COMPARISON_DETAILS[current.vs];
+
   return (
     <section id="featured" className="relative py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeader
           eyebrow="05 · Featured comparisons"
-          title="Head-to-head"
-          desc="The six most-asked comparisons. Honest verdicts, real trade-offs."
+          title="The full breakdown"
+          desc="Honest verdicts, real trade-offs, pricing notes, and migration paths for the platforms developers ask about most."
         />
 
-        <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {FEATURED_COMPARISONS.map((c, i) => {
-            const p = PLATFORMS[c.vs];
+        {/* Tab strip */}
+        <div className="mt-10 -mx-2 flex gap-2 overflow-x-auto px-2 pb-2">
+          {FEATURED_COMPARISONS.map((c) => {
+            const cp = PLATFORMS[c.vs];
+            const isActive = active === c.vs;
             return (
-              <motion.div
+              <button
                 key={c.vs}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: i * 0.05 }}
-                whileHover={{ y: -4 }}
-                className="group relative flex flex-col overflow-hidden rounded-2xl border border-hairline bg-card-gradient p-6"
+                onClick={() => setActive(c.vs)}
+                className={`group flex shrink-0 items-center gap-2.5 rounded-full border px-3.5 py-2 text-sm font-medium transition-all ${
+                  isActive
+                    ? "border-catalyst/40 bg-catalyst/10 text-foreground shadow-glow"
+                    : "border-hairline bg-surface/40 text-muted-foreground hover:bg-surface hover:text-foreground"
+                }`}
               >
-                <div className="absolute right-0 top-0 h-24 w-24 opacity-30 blur-2xl transition-opacity group-hover:opacity-60"
-                     style={{ background: p.accent }} />
-                <div className="relative flex items-center gap-3">
-                  <PlatformMark p={PLATFORMS.catalyst} />
-                  <span className="font-mono text-xs text-muted-foreground">vs</span>
-                  <PlatformMark p={p} />
-                </div>
-                <h3 className="relative mt-5 text-xl font-semibold">
-                  Catalyst <span className="text-muted-foreground">vs</span> {p.name}
-                </h3>
-                <p className="relative mt-1.5 text-sm text-muted-foreground">{p.tagline}</p>
-                <div className="relative mt-5 grid grid-cols-2 gap-3">
-                  <div className="rounded-lg border border-hairline bg-background/30 p-3">
-                    <div className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">Use case</div>
-                    <div className="mt-1 text-sm font-medium">{c.use}</div>
-                  </div>
-                  <div className="rounded-lg border border-catalyst/30 bg-catalyst/[0.06] p-3">
-                    <div className="font-mono text-[10px] uppercase tracking-wider text-catalyst">Verdict</div>
-                    <div className="mt-1 text-sm font-medium">{c.verdict}</div>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setOpen(open === c.vs ? null : c.vs)}
-                  className="relative mt-6 inline-flex items-center justify-between rounded-md border border-hairline bg-surface px-3 py-2 text-sm font-medium hover:border-catalyst/40 hover:bg-surface-elevated"
-                >
-                  {open === c.vs ? "Hide comparison" : "Compare"}
-                  <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
-                </button>
-                <AnimatePresence>
-                  {open === c.vs && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      className="relative mt-4 overflow-hidden"
-                    >
-                      <ComparePreviewCard vsId={c.vs} />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
+                <PlatformMark p={cp} size={22} />
+                <span>vs {cp.name}</span>
+              </button>
             );
           })}
         </div>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={current.vs}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.35 }}
+            className="mt-6 overflow-hidden rounded-3xl border border-hairline bg-card-gradient"
+          >
+            {/* Header */}
+            <div className="relative overflow-hidden border-b border-hairline p-7 sm:p-9">
+              <div
+                className="absolute -right-20 -top-20 h-72 w-72 rounded-full opacity-40 blur-3xl"
+                style={{ background: p.accent }}
+              />
+              <div className="relative flex flex-wrap items-start justify-between gap-6">
+                <div>
+                  <div className="flex items-center gap-3">
+                    <PlatformMark p={PLATFORMS.catalyst} size={44} />
+                    <span className="font-mono text-xs text-muted-foreground">vs</span>
+                    <PlatformMark p={p} size={44} />
+                  </div>
+                  <h3 className="mt-5 text-3xl font-semibold tracking-tight sm:text-4xl">
+                    Catalyst <span className="text-muted-foreground">vs</span> {p.name}
+                  </h3>
+                  <p className="mt-3 max-w-2xl text-sm text-muted-foreground sm:text-base">
+                    {detail.summary}
+                  </p>
+                </div>
+                <div className="flex shrink-0 flex-col gap-2">
+                  <div className="rounded-lg border border-catalyst/30 bg-catalyst/[0.06] px-4 py-2.5">
+                    <div className="font-mono text-[10px] uppercase tracking-wider text-catalyst">Verdict</div>
+                    <div className="mt-0.5 text-sm font-medium">{current.verdict}</div>
+                  </div>
+                  <div className="rounded-lg border border-hairline bg-background/30 px-4 py-2.5">
+                    <div className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">Best for</div>
+                    <div className="mt-0.5 text-sm font-medium">{current.use}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Body */}
+            <div className="grid gap-px bg-hairline/60 sm:grid-cols-2">
+              {/* Pros */}
+              <div className="bg-card-gradient p-7 sm:p-8">
+                <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-catalyst">
+                  <Check size={12} /> Where Catalyst wins
+                </div>
+                <ul className="mt-4 space-y-3">
+                  {detail.catalystPros.map((pro) => (
+                    <li key={pro} className="flex gap-3 text-sm">
+                      <Check size={16} className="mt-0.5 shrink-0 text-catalyst" />
+                      <span className="text-foreground/90">{pro}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Cons / trade-offs */}
+              <div className="bg-card-gradient p-7 sm:p-8">
+                <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+                  <Minus size={12} /> Where {p.name} still wins
+                </div>
+                <ul className="mt-4 space-y-3">
+                  {detail.catalystCons.map((con) => (
+                    <li key={con} className="flex gap-3 text-sm">
+                      <Minus size={16} className="mt-0.5 shrink-0 text-muted-foreground" />
+                      <span className="text-foreground/80">{con}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Ideal use cases */}
+              <div className="bg-card-gradient p-7 sm:p-8">
+                <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-catalyst">
+                  <Target size={12} /> Pick Catalyst when
+                </div>
+                <ul className="mt-4 space-y-3">
+                  {detail.idealUseCases.map((uc) => (
+                    <li key={uc} className="flex gap-3 text-sm">
+                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-catalyst" />
+                      <span className="text-foreground/90">{uc}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Pricing */}
+              <div className="bg-card-gradient p-7 sm:p-8">
+                <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-catalyst">
+                  <DollarSign size={12} /> Pricing notes
+                </div>
+                <div className="mt-4 space-y-3">
+                  <div className="rounded-lg border border-catalyst/30 bg-catalyst/[0.06] p-3">
+                    <div className="font-mono text-[10px] uppercase tracking-wider text-catalyst">Catalyst</div>
+                    <div className="mt-1 text-sm text-foreground/90">{detail.pricingNotes.catalyst}</div>
+                  </div>
+                  <div className="rounded-lg border border-hairline bg-background/30 p-3">
+                    <div className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{p.name}</div>
+                    <div className="mt-1 text-sm text-foreground/80">{detail.pricingNotes.competitor}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Migration steps */}
+            <div className="border-t border-hairline bg-surface/30 p-7 sm:p-9">
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-catalyst">
+                  <GitBranch size={12} /> Migration from {p.name} → Catalyst
+                </div>
+                <a href="#migrate" className="hidden text-xs text-muted-foreground hover:text-foreground sm:inline-flex items-center gap-1">
+                  All migration paths <ArrowRight size={12} />
+                </a>
+              </div>
+              <ol className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                {detail.migrationSteps.map((step, i) => (
+                  <li key={i} className="relative rounded-xl border border-hairline bg-background/40 p-4">
+                    <div className="font-mono text-[10px] uppercase tracking-wider text-catalyst">Step {i + 1}</div>
+                    <div className="mt-1.5 text-sm text-foreground/90">{step}</div>
+                  </li>
+                ))}
+              </ol>
+
+              <div className="mt-6 flex flex-wrap items-center gap-3">
+                <a className="group inline-flex items-center gap-1.5 rounded-md bg-catalyst-gradient px-4 py-2 text-sm font-semibold text-catalyst-foreground shadow-glow hover:brightness-110">
+                  Start migrating from {p.name} <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
+                </a>
+                <a className="inline-flex items-center gap-1.5 rounded-md border border-hairline bg-surface/60 px-4 py-2 text-sm font-medium hover:bg-surface">
+                  Read the full {p.name} guide <ArrowUpRight size={14} />
+                </a>
+              </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </section>
   );
