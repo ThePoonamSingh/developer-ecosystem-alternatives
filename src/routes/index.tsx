@@ -91,10 +91,10 @@ function Hero() {
           transition={{ duration: 0.7, delay: 0.05 }}
           className="mt-6 text-center text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl"
         >
-          <span className="text-gradient">Thinking about</span>
+          <span className="text-gradient">Stop guessing which</span>
           <br />
           <span className="relative">
-            switching platforms?
+            platform to build on.
             <span className="absolute -bottom-2 left-1/2 h-[3px] w-24 -translate-x-1/2 bg-catalyst-gradient blur-[1px]" />
           </span>
         </motion.h1>
