@@ -45,13 +45,13 @@ export const SWITCH_REASONS = [
     stat: "Minutes",
     label: "Local to live",
     desc: "From commit to production without a release engineer.",
-    proof: "Slate, Catalyst's frontend service, goes 'from local to live in minutes, all from one simple workflow.'",
+    proof: "",
   },
   {
     stat: "AI-native",
     label: "By default",
     desc: "Agents, ML and conversational AI as first-class services.",
-    proof: "ZiaServices, ConvoKraft (NLP chatbots) and QuickML (no-code ML) are built-in Catalyst components.",
+    proof: "",
   },
   {
     stat: "Fully-managed",
@@ -69,7 +69,7 @@ export const SWITCH_REASONS = [
     stat: "$250",
     label: "Free credits to start",
     desc: "Ship a production app before the kickoff meeting.",
-    proof: "Catalyst's homepage offer: free trial + $250 in credits, valid for 6 months.",
+    proof: "",
   },
 ];
 
