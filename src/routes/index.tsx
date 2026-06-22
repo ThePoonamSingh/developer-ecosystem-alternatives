@@ -279,11 +279,9 @@ function WhySwitch() {
               <div className="relative mt-3 text-sm font-semibold text-foreground">{r.label}</div>
               <div className="relative mt-1 text-sm text-muted-foreground">{r.desc}</div>
               <div className="relative mt-4 border-t border-hairline pt-3 text-xs leading-relaxed text-muted-foreground/80">
-                <span className="mr-1 inline-block rounded-sm bg-foreground/5 px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-foreground/70">
-                  Source
-                </span>
                 {r.proof}
               </div>
+
 
             </motion.div>
           ))}
