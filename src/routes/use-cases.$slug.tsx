@@ -1,10 +1,12 @@
 import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-router";
 import { ArrowLeft, ArrowUpRight, Check, GitBranch, Layers, Sparkles, Target, Workflow } from "lucide-react";
-import { USE_CASES, USE_CASE_DETAILS, PLATFORMS } from "@/lib/catalyst-data";
+import { USE_CASES, USE_CASE_DETAILS, PLATFORMS, type UseCaseDetail } from "@/lib/catalyst-data";
 import { PlatformMark } from "@/components/catalyst/PlatformMark";
 
+type UseCase = (typeof USE_CASES)[number];
+
 export const Route = createFileRoute("/use-cases/$slug")({
-  loader: ({ params }) => {
+  loader: ({ params }): { useCase: UseCase; detail: UseCaseDetail } => {
     const useCase = USE_CASES.find((u) => u.id === params.slug);
     const detail = useCase ? USE_CASE_DETAILS[useCase.id] : undefined;
     if (!useCase || !detail) throw notFound();
