@@ -147,25 +147,28 @@ function Hero() {
         </motion.div>
       </div>
 
-      {/* Floating platform halo */}
-      <div className="pointer-events-none absolute inset-x-0 top-[55%] -z-0 mx-auto hidden h-72 max-w-5xl md:block">
-        {Object.values(PLATFORMS).slice(1, 11).map((p, i, arr) => {
-          const angle = (i / arr.length) * Math.PI - Math.PI / 2;
-          const x = Math.cos(angle) * 420;
-          const y = Math.sin(angle) * 40 + 80;
-          return (
-            <motion.div
-              key={p.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 0.7, y: 0 }}
-              transition={{ duration: 1, delay: 0.6 + i * 0.05 }}
-              style={{ left: `calc(50% + ${x}px - 22px)`, top: y }}
-              className="absolute animate-float"
-            >
-              <PlatformMark p={p} size={44} />
-            </motion.div>
-          );
-        })}
+      {/* Replaces the alternatives strip */}
+      <div className="relative mx-auto mt-20 max-w-5xl px-6">
+        <div className="flex items-center gap-4">
+          <div className="h-px flex-1 bg-gradient-to-r from-transparent to-hairline" />
+          <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
+            Replaces
+          </span>
+          <div className="h-px flex-1 bg-gradient-to-l from-transparent to-hairline" />
+        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0"
+        >
+          {Object.values(PLATFORMS).slice(1, 11).map((p) => (
+            <div key={p.id} className="flex items-center gap-2">
+              <PlatformMark p={p} size={22} />
+              <span className="text-xs font-medium text-muted-foreground">{p.name}</span>
+            </div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );
