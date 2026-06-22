@@ -257,7 +257,7 @@ function WhySwitch() {
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeader
           eyebrow="03 · Why teams switch"
-          title="The math has changed"
+          title="Cheaper, faster, yours"
           desc="What used to take six vendors and a platform team now takes one SDK."
         />
 
