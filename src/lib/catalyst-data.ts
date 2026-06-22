@@ -51,7 +51,7 @@ export const SWITCH_REASONS = [
     stat: "AI-native",
     label: "By default",
     desc: "Agents, ML and conversational AI as first-class services.",
-    proof: "ZiaServices, ConvoKraft (NLP chatbots) and QuickML (no-code ML) are built-in Catalyst components.",
+    proof: "",
   },
   {
     stat: "Fully-managed",
