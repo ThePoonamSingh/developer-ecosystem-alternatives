@@ -69,7 +69,7 @@ export const SWITCH_REASONS = [
     stat: "$250",
     label: "Free credits to start",
     desc: "Ship a production app before the kickoff meeting.",
-    proof: "Catalyst's homepage offer: free trial + $250 in credits, valid for 6 months.",
+    proof: "",
   },
 ];
 
