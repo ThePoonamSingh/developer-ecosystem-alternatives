@@ -273,11 +273,18 @@ function WhySwitch() {
             >
               <div className="absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                    style={{ background: "linear-gradient(135deg, oklch(0.66 0.23 25 / 0.2), transparent 60%)" }} />
-              <div className="relative font-display text-5xl font-semibold tracking-tight text-gradient">
+              <div className="relative font-display text-4xl sm:text-5xl font-semibold tracking-tight text-gradient">
                 {r.stat}
               </div>
               <div className="relative mt-3 text-sm font-semibold text-foreground">{r.label}</div>
               <div className="relative mt-1 text-sm text-muted-foreground">{r.desc}</div>
+              <div className="relative mt-4 border-t border-hairline pt-3 text-xs leading-relaxed text-muted-foreground/80">
+                <span className="mr-1 inline-block rounded-sm bg-foreground/5 px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-foreground/70">
+                  Source
+                </span>
+                {r.proof}
+              </div>
+
             </motion.div>
           ))}
         </div>
