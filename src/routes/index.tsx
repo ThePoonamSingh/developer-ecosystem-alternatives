@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import {
@@ -292,72 +292,37 @@ function WhySwitch() {
 }
 
 function CompareByBuild() {
-  const [active, setActive] = useState<string | null>(null);
-  const current = USE_CASES.find((u) => u.id === active);
   return (
     <section id="usecase" className="relative py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeader
           eyebrow="04 · Compare by what you're building"
           title="Start from the product, not the platform"
-          desc="Pick what you're shipping. We'll narrow the field for you."
+          desc="Pick what you're shipping. Each one opens a tailored breakdown with stack, architecture and migration notes."
         />
 
         <div className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {USE_CASES.map((u) => {
             const Icon = USECASE_ICONS[u.icon] ?? Layers;
-            const isActive = active === u.id;
             return (
-              <button
+              <Link
                 key={u.id}
-                onClick={() => setActive(isActive ? null : u.id)}
-                className={`group relative overflow-hidden rounded-2xl border p-6 text-left transition-all ${
-                  isActive
-                    ? "border-catalyst/40 bg-card-gradient shadow-glow"
-                    : "border-hairline bg-surface/40 hover:bg-card-gradient"
-                }`}
+                to="/use-cases/$slug"
+                params={{ slug: u.id }}
+                className="group relative overflow-hidden rounded-2xl border border-hairline bg-surface/40 p-6 text-left transition-all hover:bg-card-gradient hover:border-catalyst/40"
               >
-                <div className={`grid h-10 w-10 place-items-center rounded-lg ${isActive ? "bg-catalyst/15 text-catalyst" : "bg-accent text-foreground/80 group-hover:text-foreground"}`}>
+                <div className="grid h-10 w-10 place-items-center rounded-lg bg-accent text-foreground/80 group-hover:bg-catalyst/15 group-hover:text-catalyst">
                   <Icon size={18} />
                 </div>
-                <div className="mt-4 text-base font-semibold">{u.title}</div>
-                <div className="mt-1 text-xs text-muted-foreground">{u.comparisons.length} comparisons</div>
-              </button>
+                <div className="mt-4 flex items-center justify-between gap-3">
+                  <div className="text-base font-semibold">{u.title}</div>
+                  <ArrowUpRight size={16} className="text-muted-foreground transition group-hover:text-catalyst" />
+                </div>
+                <div className="mt-1 text-xs text-muted-foreground">{u.comparisons.length} comparisons · breakdown</div>
+              </Link>
             );
           })}
         </div>
-
-        <AnimatePresence>
-          {current && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="overflow-hidden"
-            >
-              <div className="mt-6 rounded-2xl border border-hairline bg-card-gradient p-6">
-                <div className="font-mono text-xs uppercase tracking-wider text-catalyst">
-                  Recommended comparisons for {current.title}
-                </div>
-                <div className="mt-4 grid gap-3 md:grid-cols-3">
-                  {current.comparisons.map((id) => (
-                    <div key={id} className="flex items-center justify-between rounded-xl border border-hairline bg-surface/60 p-3">
-                      <div className="flex items-center gap-3">
-                        <PlatformMark p={PLATFORMS[id]} size={32} />
-                        <div>
-                          <div className="text-sm font-medium">Catalyst vs {PLATFORMS[id].name}</div>
-                          <div className="text-xs text-muted-foreground">{PLATFORMS[id].tagline}</div>
-                        </div>
-                      </div>
-                      <ArrowUpRight size={16} className="text-muted-foreground" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
     </section>
   );

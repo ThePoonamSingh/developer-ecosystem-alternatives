@@ -84,6 +84,250 @@ export const USE_CASES = [
   { id: "saas", title: "Multi-tenant SaaS", icon: "Layers", comparisons: ["supabase", "vercel", "aws"] },
 ];
 
+export type UseCaseDetail = {
+  tagline: string;
+  description: string;
+  catalystStack: { title: string; desc: string }[];
+  architecture: string[];
+  challenges: { problem: string; solution: string }[];
+  migrationNotes: string[];
+  recommendedFor: string[];
+};
+
+export const USE_CASE_DETAILS: Record<string, UseCaseDetail> = {
+  portal: {
+    tagline: "Branded, secure, self-service for your customers",
+    description:
+      "A modern customer portal needs SSO, role-based access, document storage, billing visibility, and a support surface — all behind your own domain. Most teams stitch this from 4+ vendors. Catalyst gives you the whole surface in one project.",
+    catalystStack: [
+      { title: "Auth + SSO", desc: "Email, social, SAML and OIDC out of the box with org/team primitives." },
+      { title: "Postgres + RLS", desc: "Per-tenant data isolation enforced at the database layer." },
+      { title: "File Store", desc: "Signed URLs, virus scanning, audit log for invoices and contracts." },
+      { title: "Edge functions", desc: "Webhook handlers for billing, CRM and support tools." },
+    ],
+    architecture: [
+      "Slate frontend hosted on Catalyst edge with per-tenant subdomain routing",
+      "AppSail server functions handle session, billing and document signing",
+      "Data Store (Postgres) for accounts, entitlements and audit trail",
+      "File Store for documents with org-scoped signed URLs",
+    ],
+    challenges: [
+      { problem: "Per-tenant data leaks", solution: "Postgres RLS policies + Catalyst auth claims on every query." },
+      { problem: "Custom domains & SSL", solution: "Bring-your-own domain with automatic certificate renewal." },
+      { problem: "Audit & compliance", solution: "Built-in activity log, exportable to your SIEM." },
+    ],
+    migrationNotes: [
+      "Map existing identity provider to Catalyst Auth via SAML/OIDC",
+      "Re-create tenant model in Postgres; backfill via CSV or pg_dump",
+      "Move document storage to File Store, regenerate signed URLs",
+      "Cut DNS over once a single tenant is validated end-to-end",
+    ],
+    recommendedFor: [
+      "B2B SaaS replacing a homegrown portal",
+      "Companies on Auth0 + S3 + a custom React app today",
+      "Teams that need EU data residency without rebuilding auth",
+    ],
+  },
+  agent: {
+    tagline: "Production AI agents without three SDKs",
+    description:
+      "An AI agent in production needs an LLM, a vector store, a tool runtime, durable state, auth, and somewhere to host the UI. Catalyst ships QuickML, ZiaServices, Functions and Data Store as one platform, so you stop wiring SDKs together.",
+    catalystStack: [
+      { title: "ZiaServices", desc: "Hosted LLM, embeddings and NLP under one API key." },
+      { title: "Circuits", desc: "Durable orchestration for multi-step tool-using agents." },
+      { title: "Data Store", desc: "Postgres for chat history, eval traces and tool outputs." },
+      { title: "Functions", desc: "Tool implementations with secrets and rate-limits handled." },
+    ],
+    architecture: [
+      "Slate chat UI deployed to edge with streaming responses",
+      "Circuits orchestrates plan → tool-call → reflect loops with retries",
+      "Data Store keeps embeddings, chat transcripts and eval scores",
+      "ZiaServices provides LLM completions, embeddings and moderation",
+    ],
+    challenges: [
+      { problem: "Latency on tool-using agents", solution: "Functions co-located with Data Store and ZiaServices." },
+      { problem: "Cost runaway on LLM tokens", solution: "Per-route budgets, caching and usage analytics built in." },
+      { problem: "Eval & regression", solution: "Trace every run; replay against pinned model versions." },
+    ],
+    migrationNotes: [
+      "Re-implement tool-calls as Catalyst Functions (drop OpenAI tools spec in)",
+      "Move vectors from Pinecone/Weaviate into Data Store with pgvector",
+      "Swap your LLM client for ZiaServices SDK (OpenAI-compatible)",
+      "Wire chat UI to Slate-hosted streaming endpoint",
+    ],
+    recommendedFor: [
+      "Teams running OpenAI + Pinecone + Vercel + a queue today",
+      "Internal copilots that need durable, auditable runs",
+      "Customer-facing agents that must hit a per-request SLA",
+    ],
+  },
+  internal: {
+    tagline: "Real apps for ops, not throwaway dashboards",
+    description:
+      "Internal tools start in Retool and then have to graduate when they need branding, scale, multi-tenancy or to be embedded in your product. Catalyst gives ops the speed of a builder with the runway of a real codebase.",
+    catalystStack: [
+      { title: "AppSail", desc: "Hosts the React app and server logic in one deploy." },
+      { title: "Data Store", desc: "Direct, type-safe queries to your operational database." },
+      { title: "Auth + roles", desc: "SSO, groups and granular permissions per screen and action." },
+      { title: "Circuits", desc: "Approval flows, batched jobs and scheduled tasks." },
+    ],
+    architecture: [
+      "Slate app with a component library and AI scaffolding for new screens",
+      "Server functions enforce row-level permissions before query execution",
+      "Audit log captures every mutation with actor, before/after and reason",
+      "Scheduled Circuits run nightly reconciliation and reports",
+    ],
+    challenges: [
+      { problem: "Per-seat pricing explodes", solution: "Flat platform fee — invite the whole company." },
+      { problem: "Tools become customer-facing", solution: "White-label, embed in your product, reuse auth." },
+      { problem: "Audit & change control", solution: "Git-versioned screens, PR-reviewed deploys." },
+    ],
+    migrationNotes: [
+      "Export Retool queries → use as starter schema for server functions",
+      "Re-implement screens with the Catalyst component library + AI scaffolding",
+      "Move resource credentials into Catalyst secrets",
+      "Switch SSO and cut Retool seats once parity is reached",
+    ],
+    recommendedFor: [
+      "Tools hitting Retool's per-seat ceiling",
+      "Ops apps that need to graduate into customer-facing product",
+      "Workflows beyond Retool's component library",
+    ],
+  },
+  crm: {
+    tagline: "Your CRM, your schema, your AI",
+    description:
+      "Off-the-shelf CRMs force your pipeline into their fields. A custom CRM on Catalyst gives you SQL-shaped pipelines, AI enrichment, and email/calendar integration without paying $150/seat/month.",
+    catalystStack: [
+      { title: "Data Store", desc: "Postgres for contacts, deals, activities — your schema." },
+      { title: "ZiaServices", desc: "Enrichment, deal scoring and email drafting agents." },
+      { title: "Functions", desc: "Two-way sync with Gmail, Outlook and calendars." },
+      { title: "Slate", desc: "Branded UI with pipeline, board and timeline views." },
+    ],
+    architecture: [
+      "Postgres schema for accounts → contacts → deals → activities",
+      "Background Circuits run enrichment and scoring on new leads",
+      "Email integration via Functions with OAuth-stored tokens",
+      "AI drafts replies and summarises threads inline",
+    ],
+    challenges: [
+      { problem: "Vendor schema lock-in", solution: "Own your tables, evolve them with migrations." },
+      { problem: "Sync drift with email/calendar", solution: "Circuits with retries, dedupe and conflict resolution." },
+      { problem: "Per-seat pricing", solution: "Flat fee regardless of sales headcount." },
+    ],
+    migrationNotes: [
+      "Export contacts, deals and activities from existing CRM as CSV",
+      "Define Catalyst Postgres schema; load via copy + transform scripts",
+      "Re-authorize Gmail/Outlook tokens, replay last 90 days of threads",
+      "Run parallel for one week; cut over when pipelines match",
+    ],
+    recommendedFor: [
+      "Sales teams forced into a CRM that doesn't match their motion",
+      "Founders done paying Salesforce/HubSpot per-seat",
+      "Companies that want AI agents on top of their pipeline",
+    ],
+  },
+  inventory: {
+    tagline: "Realtime stock, audit trail, no spreadsheets",
+    description:
+      "Inventory needs realtime updates across warehouses, barcode workflows, supplier integration and an audit trail that survives an audit. Catalyst's Postgres + realtime + Functions cover this without a custom backend.",
+    catalystStack: [
+      { title: "Data Store", desc: "Postgres with transactional stock updates and history tables." },
+      { title: "Realtime", desc: "Live stock counts across devices and warehouses." },
+      { title: "Functions", desc: "EDI / supplier API integration with retries and queues." },
+      { title: "File Store", desc: "Photos, packing slips and signed proof-of-delivery." },
+    ],
+    architecture: [
+      "Postgres movements table is the source of truth; stock is a view",
+      "Barcode scanner PWA hits Functions for atomic check-in/out",
+      "Supplier sync via scheduled Circuits with idempotency keys",
+      "Realtime subscriptions push updates to the warehouse floor",
+    ],
+    challenges: [
+      { problem: "Negative stock from race conditions", solution: "Serializable transactions on movement inserts." },
+      { problem: "Offline warehouse devices", solution: "Slate PWA with local queue and sync-on-reconnect." },
+      { problem: "Multi-location reconciliation", solution: "Per-location partitions with nightly variance reports." },
+    ],
+    migrationNotes: [
+      "Snapshot current stock per SKU per location as opening balance",
+      "Replay last 90 days of movements into Catalyst movements table",
+      "Run parallel scans on both systems for one week",
+      "Cut over after a successful warehouse-wide count",
+    ],
+    recommendedFor: [
+      "Operators outgrowing spreadsheets and QuickBooks",
+      "DTC brands replacing legacy WMS with a custom UX",
+      "Teams that need supplier API integration without a SaaS WMS",
+    ],
+  },
+  workflow: {
+    tagline: "Zapier-style flows with LLMs in the loop",
+    description:
+      "Internal automation usually starts on Zapier or n8n and dies when it needs custom code, branching, durable state or AI in the loop. Catalyst Circuits gives you visual + code workflows on the same runtime as your data.",
+    catalystStack: [
+      { title: "Circuits", desc: "Durable, retryable workflow engine with branching and parallelism." },
+      { title: "Functions", desc: "Custom code steps in JS/Python with full npm/pip." },
+      { title: "ZiaServices", desc: "LLM steps for classification, extraction and drafting." },
+      { title: "Data Store", desc: "Workflow state and audit log queryable as SQL." },
+    ],
+    architecture: [
+      "Triggers from webhooks, schedules, queues or DB changes",
+      "Steps mix visual blocks and Functions; LLMs inline as a step type",
+      "Failures retry with backoff; dead letters land in a queryable table",
+      "Per-run timeline UI for debugging and replay",
+    ],
+    challenges: [
+      { problem: "Workflows outgrow no-code blocks", solution: "Drop into Functions for the 10% that need code." },
+      { problem: "LLM steps are flaky", solution: "First-class retries, timeouts and structured-output validators." },
+      { problem: "No audit on Zapier", solution: "Every run, input and output stored in Postgres." },
+    ],
+    migrationNotes: [
+      "Inventory Zaps / n8n flows and their trigger frequency",
+      "Re-create top flows in Circuits; reuse credentials from Catalyst secrets",
+      "Run dual-write for a week; compare outputs",
+      "Disable original automations once parity is verified",
+    ],
+    recommendedFor: [
+      "Teams on Zapier/Make hitting task limits or branching limits",
+      "Ops automations that need LLMs without a separate service",
+      "Workflows that must be auditable and replayable",
+    ],
+  },
+  saas: {
+    tagline: "Multi-tenant from day one, without the platform team",
+    description:
+      "Multi-tenant SaaS is hard because of isolation, billing, per-tenant configuration and per-tenant scale. Catalyst gives you orgs, RLS, metered billing and per-tenant resources as platform primitives.",
+    catalystStack: [
+      { title: "Auth + orgs", desc: "Users belong to orgs with roles; invitations and SSO built in." },
+      { title: "Data Store + RLS", desc: "Row-level security keyed on the org claim for hard isolation." },
+      { title: "Stripe billing", desc: "Plans, seats, usage metering wired into auth claims." },
+      { title: "Slate + edge", desc: "Per-tenant subdomains and custom domains with auto SSL." },
+    ],
+    architecture: [
+      "Every table carries org_id; RLS enforces isolation regardless of query",
+      "Auth claims include org_id and role; functions trust the claim, not input",
+      "Stripe webhooks update entitlements consumed by RLS and feature flags",
+      "Edge router maps tenant.example.com → org context",
+    ],
+    challenges: [
+      { problem: "Cross-tenant data leaks", solution: "RLS at the database — even a buggy query can't bypass it." },
+      { problem: "Noisy-neighbor tenants", solution: "Per-tenant rate limits and optional dedicated Postgres." },
+      { problem: "Billing & entitlements drift", solution: "Stripe is the source of truth, mirrored into auth claims." },
+    ],
+    migrationNotes: [
+      "Add org_id to every multi-tenant table; backfill from current user → org map",
+      "Move auth to Catalyst, mint claims with org_id and role",
+      "Wire Stripe webhooks to entitlement table; gate features on claims",
+      "Cut DNS per tenant or run dual-stack behind a feature flag",
+    ],
+    recommendedFor: [
+      "B2B SaaS launching with multi-tenancy from v1",
+      "Single-tenant apps that need to add orgs without a rewrite",
+      "Teams paying for Auth0 + Stripe + a custom RLS layer",
+    ],
+  },
+};
+
 export const FEATURED_COMPARISONS = [
   { vs: "supabase", verdict: "Built-in AI & hosting", use: "Full-stack SaaS" },
   { vs: "firebase", verdict: "Open standards, no lock-in", use: "Mobile + web apps" },
