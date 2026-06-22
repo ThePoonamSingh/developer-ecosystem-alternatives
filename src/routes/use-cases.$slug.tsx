@@ -50,7 +50,7 @@ export const Route = createFileRoute("/use-cases/$slug")({
 });
 
 function UseCasePage() {
-  const { useCase, detail } = Route.useLoaderData();
+  const { useCase, detail } = Route.useLoaderData() as { useCase: UseCase; detail: UseCaseDetail };
 
   return (
     <div className="relative">
