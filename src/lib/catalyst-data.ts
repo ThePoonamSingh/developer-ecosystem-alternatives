@@ -45,7 +45,7 @@ export const SWITCH_REASONS = [
     stat: "Minutes",
     label: "Local to live",
     desc: "From commit to production without a release engineer.",
-    proof: "Slate, Catalyst's frontend service, goes 'from local to live in minutes, all from one simple workflow.'",
+    proof: "",
   },
   {
     stat: "AI-native",
