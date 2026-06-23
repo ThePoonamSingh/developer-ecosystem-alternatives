@@ -152,7 +152,7 @@ function Hero() {
         <div className="flex items-center gap-4">
           <div className="h-px flex-1 bg-gradient-to-r from-transparent to-hairline" />
           <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
-            Replaces
+            Alternative for
           </span>
           <div className="h-px flex-1 bg-gradient-to-l from-transparent to-hairline" />
         </div>
