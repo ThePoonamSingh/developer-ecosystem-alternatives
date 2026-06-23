@@ -659,7 +659,6 @@ function Matrix() {
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeader
           title="Comparison matrix"
-          desc="Toggle platforms in and out. Catalyst stays anchored."
         />
 
         <div className="mt-8 flex flex-wrap gap-2">
