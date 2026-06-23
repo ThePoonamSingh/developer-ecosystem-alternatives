@@ -818,7 +818,7 @@ function ComparePage() {
         <CompareByBuild />
         <FeaturedComparisons />
         <Migration />
-        <BuiltOnCatalyst />
+        
         <Matrix />
         <FinalCTA />
       </main>
