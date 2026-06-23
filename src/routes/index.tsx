@@ -659,7 +659,6 @@ function Matrix() {
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeader
           title="Comparison matrix"
-          desc="Toggle platforms in and out. Catalyst stays anchored."
         />
 
         <div className="mt-8 flex flex-wrap gap-2">
@@ -795,7 +794,7 @@ function Footer() {
   );
 }
 
-function SectionHeader({ eyebrow, title, desc }: { eyebrow?: string; title: string; desc: string }) {
+function SectionHeader({ eyebrow, title, desc }: { eyebrow?: string; title: string; desc?: string }) {
   return (
     <div className="max-w-2xl">
       {eyebrow ? <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-catalyst">{eyebrow}</div> : null}
