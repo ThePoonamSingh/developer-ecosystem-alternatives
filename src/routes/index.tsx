@@ -644,58 +644,6 @@ function Migration() {
   );
 }
 
-function BuiltOnCatalyst() {
-  return (
-    <section id="built" className="relative py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-6">
-        <SectionHeader
-          eyebrow="07 · Built on Catalyst"
-          title="Production applications, end to end"
-          desc="Eight applications real teams ship in days, not quarters."
-        />
-
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {APPS.map((a, i) => (
-            <motion.div
-              key={a.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: (i % 4) * 0.05 }}
-              whileHover={{ y: -4 }}
-              className="group flex flex-col overflow-hidden rounded-2xl border border-hairline bg-card-gradient"
-            >
-              {/* Synthetic preview */}
-              <div className="relative h-32 overflow-hidden border-b border-hairline bg-grid">
-                <div className="absolute inset-0 bg-gradient-to-br from-catalyst/20 via-transparent to-transparent" />
-                <div className="absolute left-3 top-3 flex gap-1">
-                  <span className="h-2 w-2 rounded-full bg-foreground/20" />
-                  <span className="h-2 w-2 rounded-full bg-foreground/20" />
-                  <span className="h-2 w-2 rounded-full bg-foreground/20" />
-                </div>
-                <div className="absolute inset-x-6 bottom-4 space-y-1.5">
-                  <div className="h-2 w-3/4 rounded bg-foreground/15" />
-                  <div className="h-2 w-1/2 rounded bg-foreground/10" />
-                  <div className="h-6 w-24 rounded bg-catalyst/40" />
-                </div>
-              </div>
-              <div className="flex-1 p-5">
-                <div className="font-mono text-[10px] uppercase tracking-wider text-catalyst">{a.tag}</div>
-                <div className="mt-2 text-base font-semibold">{a.title}</div>
-                <div className="mt-1 text-sm text-muted-foreground">{a.desc}</div>
-                <div className="mt-4 flex items-center gap-3 text-xs text-muted-foreground">
-                  <span className="inline-flex items-center gap-1"><Server size={12}/> us-east</span>
-                  <span className="inline-flex items-center gap-1"><Cpu size={12}/> edge</span>
-                  <span className="inline-flex items-center gap-1"><Database size={12}/> pg16</span>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
 
 function Matrix() {
   const allCols = ["catalyst", "supabase", "firebase", "vercel", "aws", "render", "retool"];
