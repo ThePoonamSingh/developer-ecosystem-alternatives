@@ -6,7 +6,7 @@ import {
   Users, Layout, Contact, Package, Workflow, Database, Server, Globe, Cpu,
   ChevronRight, Github, Star,
 } from "lucide-react";
-import { PLATFORMS, CATEGORIES, SWITCH_REASONS, USE_CASES, FEATURED_COMPARISONS, MIGRATIONS, APPS, MATRIX, COMPARISON_DETAILS } from "@/lib/catalyst-data";
+import { PLATFORMS, CATEGORIES, SWITCH_REASONS, USE_CASES, FEATURED_COMPARISONS, MIGRATIONS, APPS, MATRIX, COMPARISON_DETAILS, PLATFORM_DETAILS } from "@/lib/catalyst-data";
 import { DecisionSearch } from "@/components/catalyst/DecisionSearch";
 import { PlatformMark } from "@/components/catalyst/PlatformMark";
 import { Check, Minus, DollarSign, Target, GitBranch } from "lucide-react";
