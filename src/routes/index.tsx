@@ -813,9 +813,9 @@ function ComparePage() {
       <Nav />
       <main>
         <Hero />
+        <FeaturedComparisons />
         <PlatformUniverse />
         <CompareByBuild />
-        <FeaturedComparisons />
         <Migration />
         <Matrix />
         <WhySwitch />
