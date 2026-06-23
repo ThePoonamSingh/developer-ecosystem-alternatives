@@ -26,6 +26,119 @@ export const PLATFORMS: Record<string, Platform> = {
   cursor: { id: "cursor", name: "Cursor", tagline: "AI-first code editor", category: "AI Builder", accent: "oklch(0.95 0 0)" },
 };
 
+export type PlatformDetail = {
+  strengths: string[];
+  tradeoffs: string[];
+  bestFor: string[];
+  alternatives: string[]; // platform ids
+};
+
+export const PLATFORM_DETAILS: Record<string, PlatformDetail> = {
+  supabase: {
+    strengths: ["Open-source Postgres with realtime out of the box", "Generous free tier with auth, storage and edge functions", "Strong community, RLS-first security model"],
+    tradeoffs: ["AI / vector tooling is bolt-on, not native", "Free projects pause after a week of inactivity", "You still need a host (Vercel, Fly) for the frontend"],
+    bestFor: ["SQL-first SaaS that need RLS without DIY", "Teams comfortable owning their schema and migrations", "Side projects that may graduate to production"],
+    alternatives: ["firebase", "appwrite", "catalyst"],
+  },
+  firebase: {
+    strengths: ["Best-in-class offline sync for mobile clients", "Battle-tested at consumer scale on Google infra", "Auth, push, analytics and crash reporting in one SDK"],
+    tradeoffs: ["NoSQL document model breaks down on relational data", "Pay-per-read pricing surprises at scale", "Heavy GCP lock-in — exports are painful"],
+    bestFor: ["Mobile apps with spotty connectivity", "Realtime consumer products (chat, presence)", "Prototypes that don't need SQL analytics"],
+    alternatives: ["supabase", "appwrite", "catalyst"],
+  },
+  appwrite: {
+    strengths: ["Self-hostable on your own infrastructure", "Clean SDKs across web, mobile and server runtimes", "MIT-licensed, no vendor lock-in"],
+    tradeoffs: ["Smaller ecosystem and fewer integrations", "Self-hosting means you own scaling and backups", "Realtime and functions are newer than competitors"],
+    bestFor: ["Privacy-sensitive workloads that must self-host", "Teams that want a Firebase-shaped API without GCP", "EU / on-prem deployments"],
+    alternatives: ["supabase", "firebase", "catalyst"],
+  },
+  vercel: {
+    strengths: ["Industry-leading Next.js DX and preview deploys", "Massive global edge network", "Zero-config for most modern frameworks"],
+    tradeoffs: ["Backend pieces (DB, KV, queues, AI) each metered separately", "Bandwidth and function invocation bills compound", "Lock-in to Vercel-flavored Next.js features"],
+    bestFor: ["Marketing sites and content-heavy frontends", "Next.js apps with light backend needs", "Teams that already pay for Supabase / Upstash separately"],
+    alternatives: ["netlify", "render", "catalyst"],
+  },
+  render: {
+    strengths: ["Heroku-style DX for long-running services", "Docker support gives flexibility for any runtime", "Predictable per-service pricing"],
+    tradeoffs: ["No native AI, vector or queue primitives", "Cold starts on free tier are slow", "Preview environments don't include data by default"],
+    bestFor: ["Migrating off Heroku without rewriting", "API + worker apps with a managed Postgres alongside", "Backends that need arbitrary Docker images"],
+    alternatives: ["railway", "vercel", "catalyst"],
+  },
+  railway: {
+    strengths: ["Fast provisioning, great developer ergonomics", "Project-level environments with shared variables", "Generous usage-based pricing for hobby projects"],
+    tradeoffs: ["Smaller global footprint than Vercel / Render", "Limited compliance certifications today", "Best for stateless services — stateful DBs need care"],
+    bestFor: ["Hobby and indie SaaS launches", "Monorepos with multiple services per project", "Teams that want infra-as-code without YAML hell"],
+    alternatives: ["render", "vercel", "catalyst"],
+  },
+  netlify: {
+    strengths: ["Pioneered Jamstack with strong static-site DX", "Mature plugin and form ecosystem", "Easy split-testing and edge handlers"],
+    tradeoffs: ["Backend story (functions, DB) lags Vercel", "Build minutes and bandwidth caps bite at scale", "Less compelling for dynamic SSR-heavy apps"],
+    bestFor: ["Static marketing sites with light dynamic bits", "Agencies shipping client sites at volume", "Teams invested in Jamstack tooling"],
+    alternatives: ["vercel", "render", "catalyst"],
+  },
+  aws: {
+    strengths: ["Anything is possible — every primitive exists", "Deepest compliance and global region coverage", "Mature multi-region active-active capabilities"],
+    tradeoffs: ["Requires a platform team to use safely", "IAM, VPC and CloudFormation steep learning curve", "Bills are unpredictable without FinOps discipline"],
+    bestFor: ["Hyperscale workloads with regulated data", "GPU / FPGA / bare-metal compute needs", "Enterprises with existing AWS commitments"],
+    alternatives: ["gcp", "azure", "catalyst"],
+  },
+  azure: {
+    strengths: ["Tightly integrated with Microsoft 365 and Entra ID", "Strong enterprise compliance posture", "Excellent .NET and Windows workload support"],
+    tradeoffs: ["UI and CLI ergonomics trail AWS and GCP", "Pricing and SKU sprawl is hard to reason about", "Some services are region-locked or preview-only"],
+    bestFor: ["Enterprises standardized on Microsoft stack", "Workloads needing Active Directory integration", "Government and regulated industries"],
+    alternatives: ["aws", "gcp", "catalyst"],
+  },
+  gcp: {
+    strengths: ["BigQuery and Vertex AI are best-in-class", "Strong data and ML primitives", "Excellent Kubernetes (GKE) experience"],
+    tradeoffs: ["Smaller service catalog than AWS", "Support quality varies by tier", "Less third-party tooling than AWS"],
+    bestFor: ["Data-heavy analytics and ML pipelines", "Teams already on Firebase scaling up", "Kubernetes-native deployments"],
+    alternatives: ["aws", "azure", "catalyst"],
+  },
+  retool: {
+    strengths: ["Fastest way to ship an internal dashboard", "Huge library of pre-built components and integrations", "Non-engineers can contribute screens"],
+    tradeoffs: ["Per-end-user pricing explodes past a few hundred users", "Hard to white-label or embed in a customer product", "Custom logic still requires JS — not truly no-code"],
+    bestFor: ["Ops, finance and support dashboards", "Quick CRUD on top of an existing database", "Teams without dedicated frontend engineers"],
+    alternatives: ["appsmith", "catalyst"],
+  },
+  appsmith: {
+    strengths: ["Open-source and self-hostable", "Free for unlimited end-users when self-hosted", "Active community and plugin ecosystem"],
+    tradeoffs: ["UI polish and component depth trail Retool", "Self-hosting adds ops overhead", "Cloud tier has fewer features than Retool cloud"],
+    bestFor: ["Cost-sensitive teams replacing Retool", "On-prem internal tools for regulated industries", "OSS-first engineering cultures"],
+    alternatives: ["retool", "catalyst"],
+  },
+  lovable: {
+    strengths: ["Natural-language to working web app in minutes", "Full source code ownership, no black box", "Native integration with Supabase backend"],
+    tradeoffs: ["Best for greenfield apps, less for legacy refactors", "Complex business logic still needs manual edits", "Backend is opinionated around Supabase"],
+    bestFor: ["Founders shipping MVPs without a dev team", "Designers prototyping production-quality UIs", "Internal tools and dashboards with custom UX"],
+    alternatives: ["bolt", "replit", "cursor"],
+  },
+  bolt: {
+    strengths: ["In-browser WebContainers — no local setup", "Fast iteration loop with live preview", "Good for one-shot demos and prototypes"],
+    tradeoffs: ["Heavier projects hit browser memory limits", "Backend story is thin compared to Lovable", "Less control over deploy targets"],
+    bestFor: ["Quick prototypes and learning projects", "Demos for client pitches", "Frontend-only experiments"],
+    alternatives: ["lovable", "replit", "cursor"],
+  },
+  replit: {
+    strengths: ["Full cloud IDE with multiplayer collaboration", "Built-in hosting, DB and Agent for many languages", "Great for teaching and pair-coding"],
+    tradeoffs: ["Performance tiers can feel slow for big repos", "Hosting is fine for small apps, not production scale", "AI Agent quality varies by language"],
+    bestFor: ["Education and bootcamps", "Hackathons and weekend projects", "Polyglot prototypes across Python / Node / Go"],
+    alternatives: ["lovable", "bolt", "cursor"],
+  },
+  cursor: {
+    strengths: ["Best-in-class AI coding inside a real IDE", "Works on existing repos at any scale", "Deep multi-file refactor and agent modes"],
+    tradeoffs: ["Local-first — no hosting or backend included", "Steeper learning curve than browser builders", "Subscription cost adds up for teams"],
+    bestFor: ["Professional engineers in large codebases", "Teams refactoring legacy code with AI", "Anyone happy in VS Code who wants more"],
+    alternatives: ["lovable", "replit", "bolt"],
+  },
+  catalyst: {
+    strengths: ["Auth, DB, storage, AI, hosting and workflows on one bill", "AI agents and vector search as first-class primitives", "Predictable flat pricing with no per-seat ceiling"],
+    tradeoffs: ["Younger ecosystem than AWS or Supabase", "Multi-region active-active still on the roadmap", "Less flexible than raw Docker for exotic runtimes"],
+    bestFor: ["AI-native SaaS that need DB + agents together", "Teams replacing 4–6 vendors with one platform", "Internal tools that must graduate into product"],
+    alternatives: ["supabase", "vercel", "aws"],
+  },
+};
+
+
 export const CATEGORIES = [
   { id: "backend", title: "Backend Platforms", subtitle: "Auth, database, storage, functions", platforms: ["supabase", "firebase", "appwrite"] },
   { id: "hosting", title: "Hosting Platforms", subtitle: "Deploy & serve frontends and services", platforms: ["vercel", "render", "railway", "netlify"] },
