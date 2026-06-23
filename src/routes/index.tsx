@@ -181,7 +181,7 @@ function PlatformUniverse() {
     <section id="universe" className="relative py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeader
-          eyebrow="02 · Platform universe"
+          eyebrow=""
           title="The whole ecosystem, on one map"
           desc="Five categories. Seventeen platforms. One decision."
         />
@@ -259,7 +259,7 @@ function WhySwitch() {
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-hairline to-transparent" />
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeader
-          eyebrow="03 · Why teams switch"
+          eyebrow=""
           title="Cheaper, faster, yours"
           desc="What used to take six vendors and a platform team now takes one SDK."
         />
