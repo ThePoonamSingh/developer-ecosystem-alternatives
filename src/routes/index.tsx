@@ -72,18 +72,6 @@ function Hero() {
       <div className="absolute inset-0 bg-grid opacity-[0.35] [mask-image:radial-gradient(ellipse_at_top,black,transparent_70%)]" />
 
       <div className="relative mx-auto max-w-6xl px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mx-auto flex max-w-fit items-center gap-2 rounded-full border border-hairline bg-surface/60 px-3 py-1 font-mono text-[11px] text-muted-foreground backdrop-blur"
-        >
-          <span className="relative flex h-1.5 w-1.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-catalyst opacity-75" />
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-catalyst" />
-          </span>
-          DEVELOPER DECISION ENGINE · v2026.1
-        </motion.div>
 
         <motion.h1
           initial={{ opacity: 0, y: 16 }}
