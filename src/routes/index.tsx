@@ -405,8 +405,7 @@ function FeaturedComparisons() {
     <section id="featured" className="relative py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeader
-          eyebrow="05 · Featured comparisons"
-          title="The full breakdown"
+          title="Featured comparisons"
           desc="Honest verdicts, real trade-offs, pricing notes, and migration paths for the platforms developers ask about most."
         />
 
