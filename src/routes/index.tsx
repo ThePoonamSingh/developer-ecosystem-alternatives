@@ -364,7 +364,6 @@ function CompareByBuild() {
     <section id="usecase" className="relative py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeader
-          eyebrow=""
           title="Compare by what you're building"
           desc="Pick what you're shipping. Each one opens a tailored breakdown with stack, architecture and migration notes."
         />
