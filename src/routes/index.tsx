@@ -814,12 +814,11 @@ function ComparePage() {
       <main>
         <Hero />
         <PlatformUniverse />
-        <WhySwitch />
         <CompareByBuild />
         <FeaturedComparisons />
         <Migration />
-        
         <Matrix />
+        <WhySwitch />
         <FinalCTA />
       </main>
       <Footer />
