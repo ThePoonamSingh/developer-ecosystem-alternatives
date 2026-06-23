@@ -170,8 +170,8 @@ function PlatformUniverse() {
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeader
           eyebrow=""
-          title="The whole ecosystem, on one map"
-          desc="Five categories. Seventeen platforms. One decision."
+          title="Stop tab-hopping through vendor sites."
+          desc="Compare seventeen platforms across five categories so you can pick the right one in minutes."
         />
 
         <div className="mt-12 grid gap-6 lg:grid-cols-[280px_1fr]">
