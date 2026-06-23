@@ -6,7 +6,7 @@ import {
   Users, Layout, Contact, Package, Workflow, Database, Server, Globe, Cpu,
   ChevronRight, Github, Star,
 } from "lucide-react";
-import { PLATFORMS, CATEGORIES, SWITCH_REASONS, USE_CASES, FEATURED_COMPARISONS, MIGRATIONS, APPS, MATRIX, COMPARISON_DETAILS } from "@/lib/catalyst-data";
+import { PLATFORMS, CATEGORIES, SWITCH_REASONS, USE_CASES, FEATURED_COMPARISONS, MIGRATIONS, APPS, MATRIX, COMPARISON_DETAILS, PLATFORM_DETAILS } from "@/lib/catalyst-data";
 import { DecisionSearch } from "@/components/catalyst/DecisionSearch";
 import { PlatformMark } from "@/components/catalyst/PlatformMark";
 import { Check, Minus, DollarSign, Target, GitBranch } from "lucide-react";
@@ -164,6 +164,7 @@ function Hero() {
 
 function PlatformUniverse() {
   const [activeCat, setActiveCat] = useState(CATEGORIES[0].id);
+  const [openId, setOpenId] = useState<string | null>(null);
   const current = CATEGORIES.find((c) => c.id === activeCat)!;
   return (
     <section id="universe" className="relative py-24 sm:py-32">
@@ -182,7 +183,7 @@ function PlatformUniverse() {
               return (
                 <button
                   key={c.id}
-                  onClick={() => setActiveCat(c.id)}
+                  onClick={() => { setActiveCat(c.id); setOpenId(null); }}
                   className={`group relative flex min-w-[200px] items-start gap-3 rounded-xl border p-4 text-left transition-all ${
                     active
                       ? "border-catalyst/40 bg-card-gradient shadow-glow"
@@ -213,11 +214,16 @@ function PlatformUniverse() {
             >
               {current.platforms.map((id) => {
                 const p = PLATFORMS[id];
+                const d = PLATFORM_DETAILS[id];
+                const isOpen = openId === id;
                 return (
                   <motion.div
                     key={id}
+                    layout
                     whileHover={{ y: -3 }}
-                    className="group relative overflow-hidden rounded-2xl border border-hairline bg-card-gradient p-5 transition-colors hover:border-catalyst/30"
+                    className={`group relative overflow-hidden rounded-2xl border bg-card-gradient p-5 transition-colors ${
+                      isOpen ? "border-catalyst/40 shadow-glow sm:col-span-2 xl:col-span-3" : "border-hairline hover:border-catalyst/30"
+                    }`}
                   >
                     <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                          style={{ background: `radial-gradient(circle, ${p.accent}, transparent 70%)` }} />
@@ -227,9 +233,79 @@ function PlatformUniverse() {
                     </div>
                     <div className="relative mt-4 text-lg font-semibold">{p.name}</div>
                     <div className="relative mt-1 text-sm text-muted-foreground">{p.tagline}</div>
-                    <button className="relative mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-catalyst opacity-0 transition-opacity group-hover:opacity-100">
-                      vs Catalyst <ArrowRight size={14} />
+
+                    <button
+                      onClick={() => setOpenId(isOpen ? null : id)}
+                      className="relative mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-catalyst hover:underline"
+                    >
+                      {isOpen ? "Hide details" : "Show details"}
+                      <ChevronRight size={14} className={`transition-transform ${isOpen ? "rotate-90" : ""}`} />
                     </button>
+
+                    <AnimatePresence initial={false}>
+                      {isOpen && d && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.25 }}
+                          className="relative mt-6 overflow-hidden"
+                        >
+                          <div className="grid gap-6 border-t border-hairline pt-6 md:grid-cols-2">
+                            <div>
+                              <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-foreground/80">
+                                <Check size={14} className="text-catalyst" /> Strengths
+                              </div>
+                              <ul className="space-y-1.5 text-sm text-muted-foreground">
+                                {d.strengths.map((s) => (
+                                  <li key={s} className="flex gap-2"><span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-catalyst" />{s}</li>
+                                ))}
+                              </ul>
+                            </div>
+                            <div>
+                              <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-foreground/80">
+                                <Minus size={14} className="text-muted-foreground" /> Tradeoffs
+                              </div>
+                              <ul className="space-y-1.5 text-sm text-muted-foreground">
+                                {d.tradeoffs.map((s) => (
+                                  <li key={s} className="flex gap-2"><span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-muted-foreground/60" />{s}</li>
+                                ))}
+                              </ul>
+                            </div>
+                            <div>
+                              <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-foreground/80">
+                                <Target size={14} className="text-catalyst" /> Best fit for
+                              </div>
+                              <ul className="space-y-1.5 text-sm text-muted-foreground">
+                                {d.bestFor.map((s) => (
+                                  <li key={s} className="flex gap-2"><span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-catalyst" />{s}</li>
+                                ))}
+                              </ul>
+                            </div>
+                            <div>
+                              <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-foreground/80">
+                                <GitBranch size={14} className="text-catalyst" /> Consider instead
+                              </div>
+                              <div className="flex flex-wrap gap-2">
+                                {d.alternatives.map((altId) => {
+                                  const alt = PLATFORMS[altId];
+                                  if (!alt) return null;
+                                  return (
+                                    <span
+                                      key={altId}
+                                      className="inline-flex items-center gap-2 rounded-lg border border-hairline bg-surface/60 px-2.5 py-1.5 text-xs text-foreground/90"
+                                    >
+                                      <PlatformMark p={alt} size={16} />
+                                      {alt.name}
+                                    </span>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </motion.div>
                 );
               })}
@@ -240,6 +316,7 @@ function PlatformUniverse() {
     </section>
   );
 }
+
 
 function WhySwitch() {
   return (
