@@ -749,12 +749,12 @@ function FinalCTA() {
 
       <div className="relative mx-auto max-w-3xl px-6 text-center">
         <h2 className="text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl md:text-6xl">
-          <span className="text-gradient">Choose the platform</span>
+          <span className="text-gradient">Ship faster</span>
           <br />
-          that helps you ship faster.
+          on the platform built for builders.
         </h2>
         <p className="mx-auto mt-5 max-w-xl text-base text-muted-foreground sm:text-lg">
-          Compare. Evaluate. Migrate. Build.
+          Compare, evaluate, and migrate — all in one place.
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <a className="group inline-flex items-center gap-1.5 rounded-md bg-catalyst-gradient px-5 py-3 text-sm font-semibold text-catalyst-foreground shadow-glow hover:brightness-110">
