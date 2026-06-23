@@ -580,8 +580,7 @@ function Migration() {
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-hairline to-transparent" />
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeader
-          eyebrow="06 · Migration center"
-          title="Already using another platform?"
+          title="Migration guides"
           desc="Documented paths from the platforms developers actually use today."
         />
 
