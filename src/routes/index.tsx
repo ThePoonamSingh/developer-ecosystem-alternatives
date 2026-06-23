@@ -710,8 +710,7 @@ function Matrix() {
     <section id="matrix" className="relative py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeader
-          eyebrow="08 · Decision matrix"
-          title="The whole picture, side by side"
+          title="Decision matrix: The whole picture, side by side"
           desc="Toggle platforms in and out. Catalyst stays anchored."
         />
 
