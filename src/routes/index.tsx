@@ -851,10 +851,10 @@ function Footer() {
   );
 }
 
-function SectionHeader({ eyebrow, title, desc }: { eyebrow: string; title: string; desc: string }) {
+function SectionHeader({ eyebrow, title, desc }: { eyebrow?: string; title: string; desc: string }) {
   return (
     <div className="max-w-2xl">
-      <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-catalyst">{eyebrow}</div>
+      {eyebrow ? <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-catalyst">{eyebrow}</div> : null}
       <h2 className="mt-3 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl md:text-5xl">
         <span className="text-gradient">{title}</span>
       </h2>
